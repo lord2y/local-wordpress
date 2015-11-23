@@ -1,0 +1,12 @@
+---
+#Define your timezone
+timezone: "Europe/Rome"
+#Specify domain for your project
+domain: example.com
+#Specify Wordpress version based on github repository
+wp_version: 3.7.11
+#Specify variables for DB
+wp_db_name: wordpress-test
+wp_db_user: wordpress-test
+wp_db_passwd: password$1
+db_hostname: localhost

@@ -1,0 +1,19 @@
+---
+  - name: Install PHP.
+    apt: name={{ item }} state=present
+    with_items:
+      - php5-cgi
+      - php5-mysql
+      - php5-cli
+      - php5-curl
+      - php5-gd
+      - php5-mcrypt
+    notify: restart apache
+  - name: Copy fixed php.ini.
+    copy:
+      src: files/php.ini
+      dest: /etc/php5/cgi/php.ini
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart apache

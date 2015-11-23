@@ -1,0 +1,33 @@
+---
+  - name: Download Composer installer.
+    get_url:
+      url: https://getcomposer.org/installer
+      dest: /tmp/composer-installer.php
+      mode: 0755
+  - name: Run Composer installer.
+    command: >
+      php composer-installer.php
+      chdir=/tmp
+      creates=/usr/local/bin/composer
+  - name: Move Composer into globally-accessible location.
+    shell: >
+      mv /tmp/composer.phar /usr/local/bin/composer
+      creates=/usr/local/bin/composer
+  #- name: Check out webroot-installer master branch.
+  #  git:
+  #    repo: https://github.com/fancyguy/webroot-installer.git
+  #    dest: /opt/webroot-installer
+  - name: Add composer.json file for Wordpress.
+    template:
+        src: "template/composer.json.j2"
+        dest: "/tmp/composer.json"
+  - name: Run Composer installer.
+    shell: >
+      /usr/local/bin/composer install
+      chdir=/tmp
+  - name: Copy the "wp-config.php" file inside the root directory.
+    template:
+      src: "template/wp-config.php.j2"
+      dest: "/var/www/{{ domain }}/htdocs/wp-config.php"
+      owner: "{{ domain }}"
+      group: vhosts

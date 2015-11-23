@@ -1,0 +1,35 @@
+{
+    "name": "Wordpress Deploy with Composer",
+    "description": "Package to build site",
+    "authors": [
+        {
+            "name": "Alessandro Ratti",
+            "email": "alessandro.ratti@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress/wordpress",
+                "type": "webroot",
+                "version": "{{ wp_version }}",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "{{ wp_version }}"
+                },
+                "require": {
+                    "fancyguy/webroot-installer": "1.0.0"
+                }
+            }
+        }
+    ],
+    "require": {
+        "wordpress/wordpress": "{{ wp_version }}"
+    },
+    "extra": {
+        "webroot-dir": "/var/www/{{ domain }}/htdocs",
+        "webroot-package": "wordpress/wordpress"
+    }
+}

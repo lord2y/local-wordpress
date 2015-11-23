@@ -1,0 +1,41 @@
+---
+- hosts: all
+  sudo: yes
+  gather_facts: no
+  vars_files:
+    - vars/vars.yml
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+    - name: Get software for apt repository management and other dependencies.
+      apt: name={{ item }} state=present
+      with_items:
+        - git
+        - python-apt
+        - python-pycurl
+    - name: Check the Current Timezone
+      command: cat /etc/timezone
+      register: current_timezone
+    - name: Set the provided Timezone
+      copy:
+        content: "{{ timezone }}"
+        dest: /etc/timezone
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+      when: current_timezone.stdout != "{{ timezone }}"
+      register: set_timezone
+    - name: Update Timezone
+      command: dpkg-reconfigure --frontend noninteractive tzdata
+      when: set_timezone.changed
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted
+  tasks:
+    - include: tasks/users.yml
+    - include: tasks/apache.yml
+    - include: tasks/php.yml
+    - include: tasks/mysql.yml
+    - include: tasks/wordpress.yml

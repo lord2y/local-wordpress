@@ -1,0 +1,14 @@
+---
+- name: Install MySQL.
+  apt: name={{ item }} state=present
+  with_items:
+    - python-mysqldb
+    - mysql-server
+- name: Remove MySQL test database.
+  mysql_db: db=test state=absent
+- name: Create database for Wordpress.
+  mysql_db: "db={{ wp_db_name }} state=present"
+- name: Create User for database Wordpress.
+  mysql_user: "name={{ wp_db_user }} password={{ wp_db_passwd }} priv={{ wp_db_name }}.*:ALL,GRANT state=present"
+- name: Make sure MySQL is started and now and at boot.
+  service: name=mysql state=started

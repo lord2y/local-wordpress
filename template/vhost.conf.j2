@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+  ServerName {{ domain }}
+  ServerAlias www.{{ domain }}
+  ServerAdmin webmaster@{{ domain }}
+  DocumentRoot /var/www/{{ domain }}/htdocs
+
+  <IfModule mod_fcgid.c>
+    FcgidBusyTimeout 3600
+    FcgidIOTimeout   3600
+    SuexecUserGroup {{ domain }} vhosts
+    <Directory /var/www/{{ domain }}/htdocs>
+      Options +ExecCGI
+      AllowOverride All
+      AddHandler fcgid-script .php
+      FCGIWrapper /var/www/{{ domain }}/scripts/php-fcgi-starter .php
+      Order allow,deny
+      Allow from all
+    </Directory>
+  </IfModule>
+
+  ErrorLog /var/www/{{ domain }}/logs/error.log
+  CustomLog /var/www/{{ domain }}/logs/access.log combined
+  ServerSignature Off
+
+</VirtualHost>

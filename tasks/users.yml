@@ -1,0 +1,14 @@
+---
+  - name: Create Group for vhosts
+    group: name=vhosts state=present
+  - name: Create /var/www directory if not exists.
+    file: path=/var/www state=directory
+  - name: Create Users for vhosts
+    user: name={{ domain }} group=vhosts home=/var/www/{{ domain }} shell=/bin/false createhome=yes
+  - name: Create directory skeleton
+    file: path=/var/www/{{ domain }}/{{ item }} state=directory owner={{ domain }} group=vhosts
+    with_items:
+      - logs
+      - htdocs
+      - scripts
+      - conf
