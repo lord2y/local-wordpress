@@ -1,7 +1,7 @@
 #Ansible playbook for local Wordpress Environment
 
-
-The purpose of this idempotent playbook is to create a fully operational environment on your laptop with Vagrant.  
+The purpose of this idempotent playbook is to create a fully operational
+Wordpress stack on your laptop with Vagrant.  
 OS is Ubuntu 14.04.3 LTS.
 
 ###Playbook Tasks
