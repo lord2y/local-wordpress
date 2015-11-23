@@ -52,7 +52,6 @@ You can define some variables in `vars/vars.yml`
 
 Then simple run:
 
-```
-shell
+```shell
 vagrant up
 ```
